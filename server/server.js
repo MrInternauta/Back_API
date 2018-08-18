@@ -1,28 +1,38 @@
-require('./config/config')
-const express = require('express')
+require('./config/config');
+
+const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
-    //Iniciar  el servidor
-const app = express()
-    // parse application/x-www-form-urlencoded
+
+
+const app = express();
+
+const bodyParser = require('body-parser');
+
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
 
-//importar las rutas de los usuarios y usarlos
-app.use(require('./routes/usuario'))
-    //Conexion a mongodb
-mongoose.connect(process.env.ENV_DB, (err, res) => {
+
+app.use(require('./routes/usuario'));
+
+
+
+mongoose.connect(process.env.URLDB, (err, res) => {
+
     if (err) {
-        console.log('Error en la conexion a la db')
-        throw new Error;
+        throw err;
     } else {
-        console.log('Conexion a db realizada')
+        console.log('Base de datos ONLINE');
     }
+
+
+
 });
 
-//eschando el servidor
+
+
 app.listen(process.env.PORT, () => {
-    console.log('Escuchado en port ' + process.env.PORT)
-})
+    console.log('Escuchando puerto: ', process.env.PORT);
+});
