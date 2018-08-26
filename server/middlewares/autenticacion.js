@@ -30,7 +30,7 @@ let verificacion_token = (req, res, next) => {
 
 let verificaradmin = (req, res, next) => {
     let usuario = req.usuario
-    if (!usuario.role === "ADMIN_ROLE") {
+    if (usuario.role === "ADMIN_ROLE") {
         next()
 
     } else {
