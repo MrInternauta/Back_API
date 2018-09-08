@@ -46,6 +46,32 @@ app.get('/usuario', verificar_token.verificacion_token, function(req, res) {
 
 });
 
+app.get('/usuario/:id', (req, res) => {
+    let id = req.params.id
+    Usuario.findById(id, ((err, usuarioDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+        if (!usuarioDB) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        })
+    }))
+
+    //traer uno los productos
+    //pupulate categoria, ususario
+
+})
+
 app.post('/usuario', [verificar_token.verificacion_token, verificaradmin], function(req, res) {
 
     let body = req.body;
