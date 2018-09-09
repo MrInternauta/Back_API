@@ -45,8 +45,28 @@ let verificaradmin = (req, res, next) => {
 
 }
 
+//verificar token por url img
+let verificacion_token_img = (req, res, next) => {
+    let token = req.query.token
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token no valido'
+                }
+            })
+        }
 
+
+        req.usuario = decoded.usuario
+            //que siga con la ejecucion
+
+        next()
+    })
+}
 module.exports = {
     verificacion_token,
-    verificaradmin
+    verificaradmin,
+    verificacion_token_img
 }
