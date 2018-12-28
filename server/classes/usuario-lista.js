@@ -21,8 +21,6 @@ let lista = [];
             }
 
         }
-
-
         console.log('===== Actualizando usuario ====');
         console.log(lista);
 
