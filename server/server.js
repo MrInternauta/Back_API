@@ -9,8 +9,6 @@ const io = require('socket.io')(http);
 const mongoose = require('mongoose');
 const path = require('path');
 const socket = require('./sockets/socket');
-
-
 //permitir conexiones desde ...
 app.use(cors({
 
