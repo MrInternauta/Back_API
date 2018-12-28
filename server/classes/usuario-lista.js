@@ -1,10 +1,12 @@
+const Usuario = require("../models/user");
+const _ = require("underscore");
+
 let lista = [];
 
     // Agregar un usuario
      const agregar = (usuario) =>{
 
         lista.push(usuario);
-        console.log(lista);
         
         return usuario
     }
@@ -27,9 +29,7 @@ let lista = [];
     }
 
     // Obtener lista de usuarios
-    const getLista = () =>{
-        return lista.filter(usuario => usuario.nombre !== 'sin-nombre');
-    }
+    const getLista = () =>{ return lista.filter(usuario => usuario.nombre !== 'sin-nombre') }
 
     // Obtener un usuario
     const getUsuario = (id) => {
@@ -37,6 +37,11 @@ let lista = [];
         return lista.find(usuario => usuario.id === id);
 
     }
+        const getUsuario_xnombre = (nombre) => {
+
+            return lista.find(usuario => usuario.nombre === nombre);
+
+        }
 
     // Obtener usuario en una sala en particular
     const getUsuariosEnSala = (sala) => {
@@ -63,5 +68,6 @@ actualizarNombre,
 getLista,
 getUsuario,
 getUsuariosEnSala,
-borrarUsuario
+borrarUsuario,
+    getUsuario_xnombre
 }

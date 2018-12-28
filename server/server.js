@@ -43,14 +43,19 @@ mongoose.connect(process.env.URLDB, (err, res) => {
 
 io.on("connection", cliente => {
   console.log("Usuario conectado ", cliente.id);
-  socket.conectar_cliente(cliente,)
   socket.desconectar(cliente, io);
   socket.mensaje(cliente, io)
   socket.config_user(cliente,io)
   socket.lista_usuarios(cliente, io)
+  socket.verificar_token(cliente, io);
+  socket.getUsuario(cliente, io)
 });
 
 http.listen(process.env.PORT, () => {
     
     console.log('Escuchando puerto: ', process.env.PORT);
 });
+
+module.exports = {
+    io
+}
