@@ -49,11 +49,17 @@ const Mensaje = require('../models/mensaje');
                             });
                             mensaje.save((err, mensaje) => {
                                 if (err) {
-                                    console.log("Err", err);
+                                    console.log("Err message dont saves");
                                 }
                                 if (mensaje) {
-                                    payload.de = usuariodb[0]._doc;
-                                    payload.para = usuariodb[1]._doc;
+                                    if (payload.de === usuariodb[0]._doc._id && payload.para === usuariodb[1]._doc._id) {
+                                      payload.de = usuariodb[0]._doc;
+                                      payload.para = usuariodb[1]._doc;
+                                    } else {
+                                        payload.de = usuariodb[1]._doc;
+                                        payload.para = usuariodb[0]._doc;
+                                    }
+                                    
 
                                     // console.log("ENVIADO DE", payload.de._id);
                                     // console.log("ENVIADO PARA", payload.para._id);
@@ -91,7 +97,7 @@ const Mensaje = require('../models/mensaje');
                     payload.de = usuariodb._doc;
                     mensaje.save((err, mensaje) => {
                         if (err) {
-                            console.log("Err", err);
+                            console.log("Err find user public message");
                         }
                         if (mensaje) {
                             io.emit("mensaje-nuevo", payload);
@@ -110,10 +116,11 @@ const Mensaje = require('../models/mensaje');
  const config_user = (cliente, io) => {
     cliente.on("configurar-usuario", (payload, callback) => {
         const usuario = usuarios_conectados.getUsuario_xnombre(payload.nombre);
-        if(!usuario){
+        if (!usuario && payload.nombre != 'sin-nombre'){
             Usuario.findById(payload.nombre, (err, usersb) => {
                 if(err){
-                    console.log(err);
+                    console.log('err find user');
+                    console.log(payload.nombre);
                 }
                 if(usersb){
                     usuarios_conectados.agregar({
