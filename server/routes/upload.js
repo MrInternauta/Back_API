@@ -3,8 +3,8 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 const Usuario = require('../models/user');
-const Producto = require('../models/vehiculo');
-
+const Medico = require('../models/medico');
+const Hospital = require('../models/hospital');
 const fs = require('fs');
 const path = require('path');
 
@@ -29,7 +29,7 @@ app.put('/upload/:tipo/:id', function(req, res) {
     }
 
     // Valida tipo
-    let tiposValidos = ['productos', 'usuarios'];
+    let tiposValidos = ['medico', 'usuarios', 'hospitales'];
     if (tiposValidos.indexOf(tipo) < 0) {
         return res.status(400).json({
             ok: false,
@@ -68,13 +68,30 @@ app.put('/upload/:tipo/:id', function(req, res) {
                 ok: false,
                 err
             });
+        console.log(tipo);
+        switch (tipo) {
+            case 'usuarios':
+                imagenUsuario(id, res, nombreArchivo);
+                break;
+            case 'medico':
+                imagenMedico(id, res, nombreArchivo);
+                break;
+            case 'hospitales':
+                imagenHospital(id, res, nombreArchivo);
+                break;
+            default:
 
-        // Aqui, imagen cargada
-        if (tipo === 'usuarios') {
-            imagenUsuario(id, res, nombreArchivo);
-        } else {
-            imagenProducto(id, res, nombreArchivo);
+
+                return res.status(500).json({
+                    ok: false,
+                    err: {
+                        message: 'error'
+                    }
+                });
+
         }
+
+
 
     });
 
@@ -130,12 +147,12 @@ function imagenUsuario(id, res, nombreArchivo) {
 
 
 
-function imagenProducto(id, res, nombreArchivo) {
+function imagenHospital(id, res, nombreArchivo) {
 
-    Producto.findById(id, (err, productoDB) => {
+    Hospital.findById(id, (err, HospitalBD) => {
 
         if (err) {
-            borraArchivo(nombreArchivo, 'productos');
+            borraArchivo(nombreArchivo, 'hospitales');
 
             return res.status(500).json({
                 ok: false,
@@ -143,27 +160,27 @@ function imagenProducto(id, res, nombreArchivo) {
             });
         }
 
-        if (!productoDB) {
+        if (!HospitalBD) {
 
-            borraArchivo(nombreArchivo, 'productos');
+            borraArchivo(nombreArchivo, 'hospitales');
 
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'productos no existe'
+                    message: 'HOSPITAL no existe'
                 }
             });
         }
 
-        borraArchivo(productoDB.img, 'productos')
+        borraArchivo(HospitalBD.img, 'hospitales')
 
-        productoDB.img = nombreArchivo;
+        HospitalBD.img = nombreArchivo;
 
-        productoDB.save((err, productoGuardado) => {
+        HospitalBD.save((err, hospitalGuardado) => {
 
             res.json({
                 ok: true,
-                producto: productoGuardado,
+                hospital: hospitalGuardado,
                 img: nombreArchivo
             });
 
@@ -174,6 +191,63 @@ function imagenProducto(id, res, nombreArchivo) {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+function imagenMedico(id, res, nombreArchivo) {
+
+    Medico.findById(id, (err, MedicoDB) => {
+
+        if (err) {
+            borraArchivo(nombreArchivo, 'medico');
+
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!MedicoDB) {
+
+            borraArchivo(nombreArchivo, 'medico');
+
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'medico no existe'
+                }
+            });
+        }
+
+        borraArchivo(MedicoDB.img, 'medico')
+
+        MedicoDB.img = nombreArchivo;
+
+        MedicoDB.save((err, medicoGuardado) => {
+
+            res.json({
+                ok: true,
+                medico: medicoGuardado,
+                img: nombreArchivo
+            });
+
+        });
+
+
+    });
+
+
+}
+
+
+
 
 
 

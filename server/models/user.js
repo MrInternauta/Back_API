@@ -6,17 +6,6 @@ let rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
     message: "{VALUE} don't is type valid."
 };
-let estadosValidos = {
-    values: ['ocupado', 'libre', 'viaje', 'peticion'],
-    message: "{VALUE} don't is type valid."
-
-}
-let typeValidos = {
-    values: ['pasajero', 'conductor'],
-    message: "{VALUE} don't is type valid."
-
-}
-
 
 let Schema = mongoose.Schema;
 
@@ -30,10 +19,6 @@ let userSchema = new Schema({
         type: String,
         required: [true, 'The lastname is NECESARIO']
     },
-    phone: {
-        type: Number,
-        required: [true, 'The phone is NECESARIO']
-    },
     email: {
         type: String,
         unique: true,
@@ -43,20 +28,16 @@ let userSchema = new Schema({
         type: String,
         required: [true, 'The password is NECESARIO']
     },
-    status: {
-        type: String,
-        enum: estadosValidos,
-        default: 'ocupado'
+    google: {
+        type: Boolean,
+        default: false,
+        required: false,
+
     },
     role: {
         type: String,
         default: 'USER_ROLE',
         enum: rolesValidos
-    },
-    type: {
-        type: String,
-        default: 'pasajero',
-        enum: typeValidos,
     },
     img: {
         type: String,

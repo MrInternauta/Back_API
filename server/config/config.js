@@ -27,7 +27,7 @@ process.env.SEED = process.env.SEED || 'secret-token-DES'
 let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
-    
+
     urlDB = 'mongodb://localhost:27017/pedirtaxi';
 
 } else {
@@ -41,4 +41,4 @@ process.env.URLDB = urlDB
 //  Google Client ID
 // ============================
 
-process.env.CLIENT_ID = process.env.CLIENT_ID || '559464125748-p2c3dc0et3bao67i8oso8nhiagjg22nk.apps.googleusercontent.com'
+process.env.CLIENT_ID = process.env.CLIENT_ID || '803830275778-cb74qlcoid5okpqojo1q73punb26khp2.apps.googleusercontent.com'
