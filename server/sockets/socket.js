@@ -3,7 +3,6 @@ const usuarios_conectados = require("../classes/usuario-lista");
 const jwt = require("jsonwebtoken");
 
 const Usuario = require("../models/user");
-const Mensaje = require('../models/mensaje');
 
 //  const conectar_cliente = (cliente, io) => {
 //     usuarios_conectados.agregar({
@@ -24,93 +23,6 @@ const Mensaje = require('../models/mensaje');
     })
 }
 
-
-//escuchar mensajes
- const mensaje = (cliente, io) => {
-     
-    //cuando el cliente emmite el evento mensaje
-    cliente.on('mensaje', (payload) => {
-        //imprime el mensaje
-        
-        console.log('Mensaje recibido: ', payload);
-        if (payload.para && payload.para !== cliente.id){
-                const de = usuarios_conectados.getUsuario_xnombre(payload.de);
-                const para = usuarios_conectados.getUsuario_xnombre(payload.para);
-                if(de && para){
-                    Usuario.find(
-                        {$or : [{ _id: payload.de }, { _id: payload.para }]}
-                        ,(err, usuariodb) => {
-                        if( usuariodb) {
-                            const mensaje = new Mensaje({
-                                cuerpo: payload.cuerpo,
-                                de: payload.de,
-                                para: payload.para,
-                                fecha: payload.fecha
-                            });
-                            mensaje.save((err, mensaje) => {
-                                if (err) {
-                                    console.log("Err message dont saves");
-                                }
-                                if (mensaje) {
-                                    if (payload.de === usuariodb[0]._doc._id && payload.para === usuariodb[1]._doc._id) {
-                                      payload.de = usuariodb[0]._doc;
-                                      payload.para = usuariodb[1]._doc;
-                                    } else {
-                                        payload.de = usuariodb[1]._doc;
-                                        payload.para = usuariodb[0]._doc;
-                                    }
-                                    
-
-                                    // console.log("ENVIADO DE", payload.de._id);
-                                    // console.log("ENVIADO PARA", payload.para._id);
-                                    io.in(de.id).emit('mensaje-privado', payload);
-                                    io.in(para.id).emit("mensaje-privado", payload);
-
-                                    
-                                    // Usuario.findById(payload.para, (err, usuariodb2) => {
-                                    //     if (usuariodb2) {
-                                    //         payload.de = usuariodb._doc;
-                                    //         payload.para = usuariodb2._doc;
-                                    //         console.log("ENVIADO DE", payload.de._id);
-                                    //         console.log("ENVIADO PARA", payload.para._id);
-                                    //         io.in(de.id).emit('mensaje-privado', payload);
-                                    //         io.in(para.id).emit("mensaje-privado", payload);
-                                    //     }
-                                    // })
-                                    
-                                }
-                            });
-                        }
-                    })
-                    
-                    
-            }
-            
-        }else{
-            Usuario.findById(payload.de, (err, usuariodb) => {
-                if(usuariodb) {
-                    const mensaje = new Mensaje({
-                        cuerpo: payload.cuerpo,
-                        de: payload.de,
-                        fecha: payload.fecha
-                    });
-                    payload.de = usuariodb._doc;
-                    mensaje.save((err, mensaje) => {
-                        if (err) {
-                            console.log("Err find user public message");
-                        }
-                        if (mensaje) {
-                            io.emit("mensaje-nuevo", payload);
-                        }
-
-                    });
-                }
-            });
-       
-            
-        }
-        })
-}
 
 
  const config_user = (cliente, io) => {
@@ -185,7 +97,6 @@ const getUsuario = (cliente, io) => {
 
 module.exports = {
   desconectar,
-  mensaje,
   config_user,
   lista_usuarios,
   verificar_token,

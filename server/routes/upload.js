@@ -3,8 +3,8 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 const Usuario = require('../models/user');
-const Medico = require('../models/medico');
-const Hospital = require('../models/hospital');
+const Medico = require('../models/participante');
+
 const fs = require('fs');
 const path = require('path');
 
@@ -29,7 +29,7 @@ app.put('/upload/:tipo/:id', function(req, res) {
     }
 
     // Valida tipo
-    let tiposValidos = ['medico', 'usuarios', 'hospitales'];
+    let tiposValidos = ['participante', 'usuarios'];
     if (tiposValidos.indexOf(tipo) < 0) {
         return res.status(400).json({
             ok: false,
@@ -73,12 +73,10 @@ app.put('/upload/:tipo/:id', function(req, res) {
             case 'usuarios':
                 imagenUsuario(id, res, nombreArchivo);
                 break;
-            case 'medico':
+            case 'participante':
                 imagenMedico(id, res, nombreArchivo);
                 break;
-            case 'hospitales':
-                imagenHospital(id, res, nombreArchivo);
-                break;
+
             default:
 
 
@@ -147,52 +145,6 @@ function imagenUsuario(id, res, nombreArchivo) {
 
 
 
-function imagenHospital(id, res, nombreArchivo) {
-
-    Hospital.findById(id, (err, HospitalBD) => {
-
-        if (err) {
-            borraArchivo(nombreArchivo, 'hospitales');
-
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
-
-        if (!HospitalBD) {
-
-            borraArchivo(nombreArchivo, 'hospitales');
-
-            return res.status(400).json({
-                ok: false,
-                err: {
-                    message: 'HOSPITAL no existe'
-                }
-            });
-        }
-
-        borraArchivo(HospitalBD.img, 'hospitales')
-
-        HospitalBD.img = nombreArchivo;
-
-        HospitalBD.save((err, hospitalGuardado) => {
-
-            res.json({
-                ok: true,
-                hospital: hospitalGuardado,
-                img: nombreArchivo
-            });
-
-        });
-
-
-    });
-
-
-}
-
-
 
 
 
@@ -206,7 +158,7 @@ function imagenMedico(id, res, nombreArchivo) {
     Medico.findById(id, (err, MedicoDB) => {
 
         if (err) {
-            borraArchivo(nombreArchivo, 'medico');
+            borraArchivo(nombreArchivo, 'participante');
 
             return res.status(500).json({
                 ok: false,
@@ -216,17 +168,17 @@ function imagenMedico(id, res, nombreArchivo) {
 
         if (!MedicoDB) {
 
-            borraArchivo(nombreArchivo, 'medico');
+            borraArchivo(nombreArchivo, 'participante');
 
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'medico no existe'
+                    message: 'participante no existe'
                 }
             });
         }
 
-        borraArchivo(MedicoDB.img, 'medico')
+        borraArchivo(MedicoDB.img, 'participante')
 
         MedicoDB.img = nombreArchivo;
 
@@ -234,7 +186,7 @@ function imagenMedico(id, res, nombreArchivo) {
 
             res.json({
                 ok: true,
-                medico: medicoGuardado,
+                participante: medicoGuardado,
                 img: nombreArchivo
             });
 

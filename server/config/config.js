@@ -12,7 +12,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 //  Vencimiento del token
 // ============================
 //segundo * mitutos * horas * dias
-process.env.CADUCIDAD_TOKEN = '48h'
+process.env.CADUCIDAD_TOKEN = '12h'
 
 // ============================
 //  SEED de autenticacion
@@ -28,7 +28,7 @@ let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
 
-    urlDB = 'mongodb://localhost:27017/pedirtaxi';
+    urlDB = 'mongodb://localhost:27017/QuienEs';
 
 } else {
 
