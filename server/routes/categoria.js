@@ -96,7 +96,7 @@ app.post('/categoria/crear', function(req, res) {
 
 
 //...::: BORRAR  USUARIO POR ID (del usuario):::...
-app.delete('/participante/borrar/:id', [verificar_token.verificacion_token, verificaradmin], function(req, res) {
+app.delete('/categoria/borrar/:id', [verificar_token.verificacion_token, verificaradmin], function(req, res) {
     let id = req.params.id;
 
     Usuario.findByIdAndRemove(
