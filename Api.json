@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "cf4940a0-ae27-415b-8ad4-b87c4e7343aa",
+		"name": "IOT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "crear luz",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"name": "Content-Type",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Luz sala",
+							"type": "text"
+						},
+						{
+							"key": "user_id",
+							"value": "5d82fc9650015916508f1452",
+							"type": "text"
+						},
+						{
+							"key": "estado",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/elemento/crear/luz/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"elemento",
+						"crear",
+						"luz",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/elemento/crear/luz/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/elemento/crear/luz/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"elemento",
+						"crear",
+						"luz",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/elementos/listar/luz/5d82fc9650015916508f1452",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"elementos",
+						"listar",
+						"luz",
+						"5d82fc9650015916508f1452"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
