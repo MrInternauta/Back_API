@@ -27,6 +27,10 @@ let luzSchema = new Schema({
         type: Number,
         required: false,
         default: 0
+    },
+    pin: {
+        type: Number,
+        default: 0
     }
 
 });

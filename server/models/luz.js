@@ -26,6 +26,10 @@ let luzSchema = new Schema({
     estado: {
         type: Boolean,
         default: false
+    }, 
+    pin: {
+        type: Number,
+        default: 0
     }
 
 });

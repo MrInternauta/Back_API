@@ -18,6 +18,7 @@ const app = express();
 
 app.post('/login', (req, res) => {
     let body = req.body;
+    console.log(body.email, body.password, body);
     Usuario.findOne({ email: body.email }, (err, usuariodb) => {
         if (err) {
             return res.status(400).json({
